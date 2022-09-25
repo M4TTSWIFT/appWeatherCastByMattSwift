@@ -7,7 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, DetailPresenterDelegate {
+    
+    var detail = [WeatherModel]()
+    
     
     @IBOutlet weak var dateLabel: UILabel!
     
@@ -17,10 +20,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var windDirectionImage: UIImageView!
     
+    var lat: Double = 44.34
+    var lon: Double = 10.99
+    
+    private let presenter = DetailPresenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        presenter.setDelegate(delegate: self)
+        presenter.fetchData(lat: lat, lon: lon)
+        
     }
 
     //MARK: - setup Navigation Bar:
@@ -58,6 +68,27 @@ class ViewController: UIViewController {
     
     @objc func navigationIconTapped() {
         print("Navigation icon pressed.")
+    }
+    
+    //MARK: - ViewDidAppear
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+       // setLabels()
+        print(detail)
+    }
+    
+    //MARK: - presentDetail:
+    
+    func presentDetail(detail: WeatherModel) {
+      self.detail = [detail]
+    }
+    
+    //MARK: - setup for current city weather:
+    
+    private func setLabels() {
+       // self.dateLabel.text = "\(self.detail[0].date)"
+       // self.tempLabel.text = "\(self.detail[0].main.tempMax ) / \(self.detail[0].main.tempMin)"
     }
     
 }
