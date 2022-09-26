@@ -11,7 +11,6 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     
     var detail = [WeatherModel]()
     
-    
     @IBOutlet weak var dateLabel: UILabel!
     
     @IBOutlet weak var currentweatherImage: UIImageView!
@@ -30,12 +29,11 @@ class ViewController: UIViewController, DetailPresenterDelegate {
         setupNavigationBar()
         presenter.setDelegate(delegate: self)
         presenter.fetchData(lat: lat, lon: lon)
-        
     }
 
     //MARK: - setup Navigation Bar:
 
-    private func setupNavigationBar() {
+        fileprivate func setupNavigationBar() {
         
         navigationController?.navigationBar.tintColor = .white
         
@@ -49,17 +47,18 @@ class ViewController: UIViewController, DetailPresenterDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: navigationButton)
         
-        let navigationBarCityLabel = UILabel()
-        navigationBarCityLabel.textColor = .white
-        navigationBarCityLabel.text = "cityName"
+//        let navigationBarCityLabel = UILabel()
+//        navigationBarCityLabel.textColor = .white
+//        navigationBarCityLabel.text = "\(detail[0].name)"
         
         let placeMarkButton = UIButton(type: .system)
         placeMarkButton.setImage(#imageLiteral(resourceName: "ic_place"), for: .normal)
         placeMarkButton.addTarget(self, action: #selector(placeIconTapped), for: .touchUpInside)
         
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: placeMarkButton),
-                                             UIBarButtonItem(customView: navigationBarCityLabel)
+                                           //  UIBarButtonItem(customView: navigationBarCityLabel)
                                             ]
+            
     }
     
     @objc func placeIconTapped() {
@@ -72,24 +71,78 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     
     //MARK: - ViewDidAppear
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-       // setLabels()
-        print(detail)
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        print(detail)
+//    }
     
     //MARK: - presentDetail:
     
     func presentDetail(detail: WeatherModel) {
-      self.detail = [detail]
+        self.detail = [detail]
+        setCurrentCityWeatherData()
+        print(self.detail.count)
     }
     
     //MARK: - setup for current city weather:
     
-    private func setLabels() {
-       // self.dateLabel.text = "\(self.detail[0].date)"
-       // self.tempLabel.text = "\(self.detail[0].main.tempMax ) / \(self.detail[0].main.tempMin)"
+    private func setCurrentCityWeatherData() {
+        DispatchQueue.main.sync {
+            
+            // Navigation title Currect city name tag:
+            
+            let navigationBarCityLabel = UILabel()
+            navigationBarCityLabel.textColor = .white
+            navigationBarCityLabel.text = "\(detail[0].name)"
+            navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: navigationBarCityLabel))
+            
+            // Date organize:
+            
+            if let timeResult = (self.detail[0].date as? Int) {
+                let date = Date(timeIntervalSince1970: TimeInterval(timeResult))
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = DateFormatter.Style.none
+                dateFormatter.dateStyle = DateFormatter.Style.medium
+                dateFormatter.timeZone = .current
+                
+                var currentWeekday = dateFormatter.weekdaySymbols[Calendar.current
+                    .component(.weekday, from: Date()) - 1]
+                switch currentWeekday {
+                case "понедельник":
+                    currentWeekday = "ПН"
+                case "вторник":
+                    currentWeekday = "ВТ"
+                case "среда":
+                    currentWeekday = "СР"
+                case "четверг":
+                    currentWeekday = "ЧТ"
+                case "пятница":
+                    currentWeekday = "ПТ"
+                case "суббота":
+                    currentWeekday = "СБ"
+                case "воскресенье":
+                    currentWeekday = "ВС"
+                default:
+                    break
+                }
+
+                let format = DateFormatter.dateFormat(
+                    fromTemplate: "dMMMM", options:0, locale:NSLocale.current)
+                dateFormatter.dateFormat = format
+                //let finalDate = dateFormatter.string(from: date)
+                let localDate = dateFormatter.string(from: date)
+                
+                
+                self.dateLabel.text = "\(currentWeekday), \(localDate)"
+            }
+            
+            // Other weather parameters:
+            
+            self.tempLabel.text = "\(self.detail[0].main.tempMax )º / \(self.detail[0].main.tempMin)º"
+            self.humidityLabel.text = "\(self.detail[0].main.humidity)%"
+            self.windLabel.text = "\(self.detail[0].wind.speed)м/сек"
+            //self.windDirectionImage =
+        }
     }
-    
 }
 

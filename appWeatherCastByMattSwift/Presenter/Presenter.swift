@@ -18,7 +18,7 @@ class DetailPresenter {
     weak var delegate: DetailDelegate?
     
     public func fetchData(lat: Double, lon: Double) {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=4da5b063c90b928b08d26d36094897e9&units=metric") else {
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=4da5b063c90b928b08d26d36094897e9&units=metric&lang=ru") else {
             return }
         let task = URLSession.shared.dataTask(with: url) { [weak self] data , _, error in
             guard let data = data, error == nil else { return }
