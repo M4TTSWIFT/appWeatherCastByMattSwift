@@ -23,6 +23,8 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     var lon: Double = 10.99
     
     private let presenter = DetailPresenter()
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,20 +130,19 @@ class ViewController: UIViewController, DetailPresenterDelegate {
 
                 let format = DateFormatter.dateFormat(
                     fromTemplate: "dMMMM", options:0, locale:NSLocale.current)
-                dateFormatter.dateFormat = format
-                //let finalDate = dateFormatter.string(from: date)
+                    dateFormatter.dateFormat = format
                 let localDate = dateFormatter.string(from: date)
-                
                 
                 self.dateLabel.text = "\(currentWeekday), \(localDate)"
             }
             
             // Other weather parameters:
             
-            self.tempLabel.text = "\(self.detail[0].main.tempMax )º / \(self.detail[0].main.tempMin)º"
+            self.currentweatherImage.image = self.detail[0].weather[0].conditionImage
+            self.tempLabel.text = "\(Int(self.detail[0].main.tempMax))º / \(Int(self.detail[0].main.tempMin))º"
             self.humidityLabel.text = "\(self.detail[0].main.humidity)%"
-            self.windLabel.text = "\(self.detail[0].wind.speed)м/сек"
-            //self.windDirectionImage =
+            self.windLabel.text = "\(Int(self.detail[0].wind.speed))м/сек"
+            self.windDirectionImage.image = self.detail[0].wind.conditionOfWind
         }
     }
 }

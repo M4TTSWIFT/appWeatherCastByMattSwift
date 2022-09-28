@@ -44,10 +44,62 @@ import UIKit
     }
     
         struct Current: Codable {
-        let id: Int?
+        let id: Int
+            
+            var conditionImage: UIImage {
+                switch id {
+                case 200...232:
+                    return (#imageLiteral(resourceName: "ic_white_day_thunder"))
+                case 300...321:
+                    return (#imageLiteral(resourceName: "ic_white_day_rain"))
+                case 500...531:
+                    return (#imageLiteral(resourceName: "ic_white_day_shower"))
+                case 600...622:
+                    return (#imageLiteral(resourceName: "ic_white_night_shower"))
+                case 701...781:
+                    return (#imageLiteral(resourceName: "ic_white_night_cloudy"))
+                case 800:
+                    return (#imageLiteral(resourceName: "ic_white_day_bright"))
+                case 801...804:
+                    return (#imageLiteral(resourceName: "ic_white_day_cloudy"))
+                default:
+                    print("error")
+                    return (#imageLiteral(resourceName: "ic_white_night_bright"))
+                }
+            }
+            
         }
         
         struct Wind: Codable {
-        let deg: Int
+        let deg: Double
         let speed: Double
+            
+            ///С направлением есть момент. Иконки сделаны по географическому направлению,
+            ///а нам нужно метеорологическое. Южний ветер дует на север (то есть, показывает
+            ///на север). Здесь же Южный ветер дизайнер отрисовал с направлением на Юг.
+            /// оставил как есть
+            
+            var conditionOfWind: UIImage {
+                switch deg {
+            case 1...45:
+                return (#imageLiteral(resourceName: "icon_wind_n"))
+            case 46...90:
+                return (#imageLiteral(resourceName: "icon_wind_ne"))
+            case 91...135:
+                return (#imageLiteral(resourceName: "icon_wind_e"))
+            case 136...180:
+                return (#imageLiteral(resourceName: "icon_wind_se"))
+            case 181...225:
+                return (#imageLiteral(resourceName: "icon_wind_s"))
+            case 226...270:
+                return (#imageLiteral(resourceName: "icon_wind_ws"))
+            case 271...315:
+                return (#imageLiteral(resourceName: "icon_wind_w"))
+            case 316...360:
+                return (#imageLiteral(resourceName: "icon_wind_wn"))
+            default:
+                print("error")
+                return (#imageLiteral(resourceName: "ic_white_day_bright"))
+                }
+            }
         }
