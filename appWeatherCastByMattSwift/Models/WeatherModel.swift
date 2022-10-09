@@ -13,17 +13,19 @@ import UIKit
         case date = "dt"
         case coord = "coord"
         case name = "name"
+        case country = "country"
         case main = "main"
         case weather = "weather"
         case wind = "wind"
         }
     
-        let date: Int
+        let date: Int?
         let coord: Coordination
         let name: String
-        let main: Daily
-        let weather: [Current]
-        let wind: Wind
+        let country: String?
+        let main: Daily?
+        let weather: [Current]?
+        let wind: Wind?
     }
     struct Coordination: Codable {
         let lat: Double

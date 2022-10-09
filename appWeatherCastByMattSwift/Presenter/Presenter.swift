@@ -7,10 +7,44 @@
 
 import UIKit
 
+protocol SearchPresenterDelegate: Any {
+    func presentCity(city: [WeatherModel])
+}
+
+typealias SearchDelegate = SearchPresenterDelegate & UIViewController
+
+class SearchPresenter {
+    
+    weak var delegate: SearchDelegate?
+    
+    public func fetchInfo() {
+        guard let path = Bundle.main.path(forResource: "city.list", ofType: "json") else { return }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            let data = try Data(contentsOf: url)
+            
+            let city = try JSONDecoder().decode([WeatherModel].self, from: data)
+            self.delegate?.presentCity(city: city)
+        } catch {
+            print("Parse Error")
+        }
+        
+    }
+    
+    public func presentDetailController() {
+        delegate?.dismiss(animated: true)
+    }
+    
+    public func setSearchDelegate(delegate: SearchDelegate) {
+        self.delegate = delegate
+    }
+}
+
 protocol DetailPresenterDelegate: Any {
     func presentDetail(detail: WeatherModel)
 }
-
 typealias DetailDelegate = DetailPresenterDelegate & UIViewController
 
 class DetailPresenter {
@@ -39,4 +73,5 @@ class DetailPresenter {
     }
     
 }
+
 

@@ -19,10 +19,17 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var windDirectionImage: UIImageView!
     
-    var lat: Double = 44.34
-    var lon: Double = 10.99
+//    var lat: Double = 44.34
+//    var lon: Double = 10.99
+    
+    var lat: Double = 0
+    var lon: Double = 0
     
     private let presenter = DetailPresenter()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barStyle = .default
+    }
     
     
 
@@ -35,12 +42,15 @@ class ViewController: UIViewController, DetailPresenterDelegate {
 
     //MARK: - setup Navigation Bar:
 
-        fileprivate func setupNavigationBar() {
-        
+    fileprivate func setupNavigationBar() {
+
+        UIApplication.shared.statusBarUIView?.backgroundColor = UIColor(named: "appMainBlue")
+
         navigationController?.navigationBar.tintColor = .white
         
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "appMainBlue")
         UINavigationBar.appearance().standardAppearance = appearance
         
         let navigationButton = UIButton(type: .system)
@@ -64,7 +74,7 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     }
     
     @objc func placeIconTapped() {
-        print("Place icon pressed.")
+        performSegue(withIdentifier: "searchViewController", sender: nil)
     }
     
     @objc func navigationIconTapped() {
@@ -138,12 +148,11 @@ class ViewController: UIViewController, DetailPresenterDelegate {
             
             // Other weather parameters:
             
-            self.currentweatherImage.image = self.detail[0].weather[0].conditionImage
-            self.tempLabel.text = "\(Int(self.detail[0].main.tempMax))º / \(Int(self.detail[0].main.tempMin))º"
-            self.humidityLabel.text = "\(self.detail[0].main.humidity)%"
-            self.windLabel.text = "\(Int(self.detail[0].wind.speed))м/сек"
-            self.windDirectionImage.image = self.detail[0].wind.conditionOfWind
+            self.currentweatherImage.image = self.detail[0].weather![0].conditionImage
+            self.tempLabel.text = "\(Int(self.detail[0].main!.tempMax))º / \(Int(self.detail[0].main!.tempMin))º"
+            self.humidityLabel.text = "\(self.detail[0].main!.humidity)%"
+            self.windLabel.text = "\(Int(self.detail[0].wind!.speed))м/сек"
+            self.windDirectionImage.image = self.detail[0].wind?.conditionOfWind
         }
     }
 }
-
