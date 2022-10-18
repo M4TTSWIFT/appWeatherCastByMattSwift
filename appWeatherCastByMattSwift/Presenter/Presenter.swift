@@ -11,11 +11,16 @@ protocol SearchPresenterDelegate: Any {
     func presentCity(city: [WeatherModel])
 }
 
-typealias SearchDelegate = SearchPresenterDelegate & UIViewController
+protocol SelectedLatLonProtocol {
+    func fetchLatLon(lat: Double, lon: Double)
+}
+
+typealias SearchDelegate = SearchPresenterDelegate & SelectedLatLonProtocol & UIViewController
 
 class SearchPresenter {
     
-    weak var delegate: SearchDelegate?
+    var delegate: SearchDelegate?
+    var latLonDelegate: SelectedLatLonProtocol?
     
     public func fetchInfo() {
         guard let path = Bundle.main.path(forResource: "city.list", ofType: "json") else { return }
@@ -29,12 +34,16 @@ class SearchPresenter {
             self.delegate?.presentCity(city: city)
         } catch {
             print("Parse Error")
+            
         }
         
     }
     
-    public func presentDetailController() {
-        delegate?.dismiss(animated: true)
+    public func presentDetailController(controller: UIViewController, lat: Double, lon: Double) {
+        let latitude = lat
+        let longitude = lon
+        latLonDelegate?.fetchLatLon(lat: latitude, lon: longitude)
+        controller.navigationController?.popViewController(animated: true)
     }
     
     public func setSearchDelegate(delegate: SearchDelegate) {

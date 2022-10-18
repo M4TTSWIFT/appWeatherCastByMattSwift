@@ -7,12 +7,18 @@
 
 import UIKit
 
+protocol LatLonProtocol {
+    func selectedLatLon(lat: Double, lon: Double)
+}
+
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SearchPresenterDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     var cities = [WeatherModel]()
     var filteredCities: [WeatherModel]!
+    
+    var selectedLatLonDelegate: LatLonProtocol!
     
     private let presenter = SearchPresenter()
     
@@ -23,8 +29,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchTableViewCell")
         setupNavigationBar()
+        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchTableViewCell")
         presenter.setSearchDelegate(delegate: self)
         presenter.fetchInfo()
         filteredCities = cities
@@ -44,25 +50,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        lon = cities[indexPath.row].coord.lon
-        lat = cities[indexPath.row].coord.lat
-        
-        presenter.presentDetailController()
+        lat = filteredCities[indexPath.row].coord.lat
+        lon = filteredCities[indexPath.row].coord.lon
     }
     
     func presentCity(city: [WeatherModel]) {
         self.cities = city
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showDetail" {
-//            let vc = segue.destination as! DetailVC
-//            vc.lat = lat
-//            vc.lon = lon
-//        }
-//    }
-    
-//    MARK: Search Bar Config
+
+//    MARK: - Search Bar Config
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredCities = []
@@ -89,7 +86,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     navigationController?.navigationBar.tintColor = .white
     navigationController?.navigationBar.backgroundColor = UIColor(named: "appMainBlue")
     navigationController?.navigationBar.barTintColor = UIColor(named: "appMainBlue")
-    navigationController?.navigationBar.isTranslucent = true
+    navigationController?.navigationBar.isTranslucent = false
         
     let appearance = UINavigationBarAppearance()
     appearance.configureWithTransparentBackground()
@@ -124,14 +121,20 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 }
 
 @objc func dismissButtonTapped() {
-    self.navigationController?.popViewController(animated: true)
+    dismiss(animated: true)
 }
 
 @objc func searchButtonTapped() {
-    print("Navigation icon pressed.")
-}
-    
-    
-    
+    selectedLatLonDelegate?.selectedLatLon(lat: lat, lon: lon)
+    dismiss(animated: true)
+    }
 }
 
+extension SearchViewController: SelectedLatLonProtocol {
+    
+
+func fetchLatLon(lat: Double, lon: Double) {
+    self.lat = lat
+    self.lon = lon
+    }
+}

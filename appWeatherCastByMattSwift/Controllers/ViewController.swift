@@ -19,25 +19,29 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var windDirectionImage: UIImageView!
     
-//    var lat: Double = 44.34
-//    var lon: Double = 10.99
-    
-    var lat: Double = 0
-    var lon: Double = 0
+    var lat: Double = 50.433334
+    var lon: Double = 30.516666
     
     private let presenter = DetailPresenter()
     
-    override func viewDidAppear(_ animated: Bool) {
-        navigationController?.navigationBar.barStyle = .default
-    }
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
+        //setupNavigationBar()
         presenter.setDelegate(delegate: self)
+        //presenter.fetchData(lat: lat, lon: lon)
+        print("viewDidLoad: \(lat) + \(lon)")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         presenter.fetchData(lat: lat, lon: lon)
+        setupNavigationBar()
+        print("VWA \(lat) and \(lon)")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barStyle = .default
     }
 
     //MARK: - setup Navigation Bar:
@@ -74,19 +78,17 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     }
     
     @objc func placeIconTapped() {
-        performSegue(withIdentifier: "searchViewController", sender: nil)
+       // performSegue(withIdentifier: "searchViewController", sender: nil)
+        let searchVC = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! SearchViewController
+        searchVC.selectedLatLonDelegate = self
+        let navController = UINavigationController(rootViewController: searchVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated:true, completion: nil)
     }
     
     @objc func navigationIconTapped() {
         print("Navigation icon pressed.")
     }
-    
-    //MARK: - ViewDidAppear
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        print(detail)
-//    }
     
     //MARK: - presentDetail:
     
@@ -155,4 +157,12 @@ class ViewController: UIViewController, DetailPresenterDelegate {
             self.windDirectionImage.image = self.detail[0].wind?.conditionOfWind
         }
     }
+}
+
+extension ViewController: LatLonProtocol {
+    func selectedLatLon(lat: Double, lon: Double) {
+        self.lat = lat
+        self.lon = lon
+    }
+    
 }

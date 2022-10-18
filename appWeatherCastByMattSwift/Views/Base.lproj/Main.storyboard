@@ -194,7 +194,7 @@
         <!--Search View Controller-->
         <scene sceneID="sa2-8p-rot">
             <objects>
-                <viewController id="NCg-sV-oom" customClass="SearchViewController" customModule="appWeatherCastByMattSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="searchViewController" id="NCg-sV-oom" customClass="SearchViewController" customModule="appWeatherCastByMattSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="a0Y-Mi-crm">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
