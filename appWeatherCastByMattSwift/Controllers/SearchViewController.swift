@@ -5,6 +5,7 @@
 //  Created by Mac on 29.09.2022.
 //
 
+import MapKit
 import UIKit
 
 protocol LatLonProtocol {
@@ -22,8 +23,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     private let presenter = SearchPresenter()
     
-    var lon: Double = 0
     var lat: Double = 0
+    var lon: Double = 0
+    
+    //MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +39,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         filteredCities = cities
     }
     
+    //MARK: - Table view settings
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredCities.count
@@ -117,6 +121,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }()
 
         navigationItem.titleView = searchBarSetup
+        
+        //MARK: - Navigation Bar buttons
 
 }
 
@@ -126,13 +132,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
 @objc func searchButtonTapped() {
     selectedLatLonDelegate?.selectedLatLon(lat: lat, lon: lon)
+    
     dismiss(animated: true)
     }
 }
 
+//MARK: - Extensions:
+
 extension SearchViewController: SelectedLatLonProtocol {
     
-
 func fetchLatLon(lat: Double, lon: Double) {
     self.lat = lat
     self.lon = lon

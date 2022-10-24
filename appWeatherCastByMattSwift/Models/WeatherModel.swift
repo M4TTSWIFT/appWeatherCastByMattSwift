@@ -35,18 +35,21 @@ import UIKit
     struct Daily: Codable {
         
         enum CodingKeys: String, CodingKey {
+            case pressure = "pressure"
             case humidity = "humidity"
             case tempMax = "temp_max"
             case tempMin = "temp_min"
         }
         
+        let pressure: Int
         let humidity: Int
         let tempMax: Double
         let tempMin: Double
     }
     
-        struct Current: Codable {
+    struct Current: Codable {
         let id: Int
+        let description: String
             
             var conditionImage: UIImage {
                 switch id {
@@ -65,7 +68,6 @@ import UIKit
                 case 801...804:
                     return (#imageLiteral(resourceName: "ic_white_day_cloudy"))
                 default:
-                    print("error")
                     return (#imageLiteral(resourceName: "ic_white_night_bright"))
                 }
             }

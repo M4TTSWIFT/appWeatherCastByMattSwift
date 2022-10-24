@@ -5,11 +5,17 @@
 //  Created by Mac on 20.09.2022.
 //
 
+import CoreLocation
+import MapKit
 import UIKit
 
-class ViewController: UIViewController, DetailPresenterDelegate {
+class ViewController: UIViewController, DetailPresenterDelegate, CLLocationManagerDelegate {
     
     var detail = [WeatherModel]()
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
+    let manager = CLLocationManager()
     
     @IBOutlet weak var dateLabel: UILabel!
     
@@ -22,19 +28,26 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     var lat: Double = 50.433334
     var lon: Double = 30.516666
     
+//    var lat: Double = 0
+//    var lon: Double = 0
+    
     private let presenter = DetailPresenter()
     
+    //MARK: - ViewDidLoad:
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setupNavigationBar()
         presenter.setDelegate(delegate: self)
-        //presenter.fetchData(lat: lat, lon: lon)
         print("viewDidLoad: \(lat) + \(lon)")
     }
     
+    //MARK: - ViewWillAppear:
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        // Set initial location:
+        let initialLocation = CLLocationCoordinate2D(latitude: self.lat, longitude: self.lon)
+        mapView.centerCoordinate = initialLocation
         presenter.fetchData(lat: lat, lon: lon)
         setupNavigationBar()
         print("VWA \(lat) and \(lon)")
@@ -62,23 +75,19 @@ class ViewController: UIViewController, DetailPresenterDelegate {
         navigationButton.addTarget(self, action: #selector(navigationIconTapped), for: .touchUpInside)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: navigationButton)
-        
-//        let navigationBarCityLabel = UILabel()
-//        navigationBarCityLabel.textColor = .white
-//        navigationBarCityLabel.text = "\(detail[0].name)"
-        
+
         let placeMarkButton = UIButton(type: .system)
         placeMarkButton.setImage(#imageLiteral(resourceName: "ic_place"), for: .normal)
         placeMarkButton.addTarget(self, action: #selector(placeIconTapped), for: .touchUpInside)
         
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: placeMarkButton),
-                                           //  UIBarButtonItem(customView: navigationBarCityLabel)
-                                            ]
-            
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: placeMarkButton)]
+        
+        
+        //MARK: - Navigation Bar buttons
+
     }
     
     @objc func placeIconTapped() {
-       // performSegue(withIdentifier: "searchViewController", sender: nil)
         let searchVC = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! SearchViewController
         searchVC.selectedLatLonDelegate = self
         let navController = UINavigationController(rootViewController: searchVC)
@@ -87,8 +96,49 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     }
     
     @objc func navigationIconTapped() {
-        print("Navigation icon pressed.")
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+        
+        
     }
+    
+    //MARK: - Map View manager and settings:
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let location = locations.first {
+            manager.stopUpdatingLocation()
+            
+            render(location)
+        }
+    }
+    
+    func render(_ location: CLLocation) {
+        
+        let coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                                longitude: location.coordinate.longitude)
+
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region,
+                          animated: true)
+        
+        navigateLocation(coordinate)
+    }
+    
+    func navigateLocation(_ coordinate: CLLocationCoordinate2D) {
+            
+            self.lat = coordinate.latitude
+            self.lon = coordinate.longitude
+            self.presenter.fetchData(lat: self.lat, lon: self.lon)
+            setupNavigationBar()
+    }
+
     
     //MARK: - presentDetail:
     
@@ -159,7 +209,13 @@ class ViewController: UIViewController, DetailPresenterDelegate {
     }
 }
 
+//MARK: - Extensions ViewController:
+
 extension ViewController: LatLonProtocol {
+    func navigateLatLon(lat: Double, lon: Double) {
+
+    }
+    
     func selectedLatLon(lat: Double, lon: Double) {
         self.lat = lat
         self.lon = lon

@@ -6,7 +6,6 @@
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -133,47 +132,21 @@
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="05P-jd-SgU" secondAttribute="trailing" constant="20" symbolic="YES" id="qGc-OO-ZvI"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ffc-4z-gkV">
-                                <rect key="frame" x="0.0" y="348" width="390" height="150"/>
-                                <color key="backgroundColor" name="appSecondaryBlue"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="Jnl-uO-ELo"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mbv-Sq-DvW">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="3jR-qn-VJT">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QE0-qy-zar">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lRo-JH-yDb">
-                                <rect key="frame" x="0.0" y="498" width="390" height="346"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zdu-JE-COs">
+                                <rect key="frame" x="0.0" y="356" width="390" height="488"/>
+                            </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="toe-Hz-d4v"/>
                         <color key="backgroundColor" name="appMainBlue"/>
                         <constraints>
-                            <constraint firstItem="lRo-JH-yDb" firstAttribute="top" secondItem="Ffc-4z-gkV" secondAttribute="bottom" id="1n8-ZY-kK8"/>
+                            <constraint firstItem="zdu-JE-COs" firstAttribute="trailing" secondItem="toe-Hz-d4v" secondAttribute="trailing" id="27c-YI-VF9"/>
                             <constraint firstItem="W2f-ZL-iTp" firstAttribute="leading" secondItem="toe-Hz-d4v" secondAttribute="leading" id="9Vz-3j-yHj"/>
-                            <constraint firstItem="Ffc-4z-gkV" firstAttribute="leading" secondItem="toe-Hz-d4v" secondAttribute="leading" id="Alt-Zl-ocj"/>
-                            <constraint firstItem="Ffc-4z-gkV" firstAttribute="top" secondItem="W2f-ZL-iTp" secondAttribute="bottom" id="IJa-S9-IeJ"/>
+                            <constraint firstItem="zdu-JE-COs" firstAttribute="top" secondItem="W2f-ZL-iTp" secondAttribute="bottom" constant="8" symbolic="YES" id="Aiw-aO-VLx"/>
+                            <constraint firstItem="zdu-JE-COs" firstAttribute="leading" secondItem="toe-Hz-d4v" secondAttribute="leading" id="EF0-ap-lOA"/>
+                            <constraint firstItem="zdu-JE-COs" firstAttribute="centerX" secondItem="P0c-pt-chZ" secondAttribute="centerX" id="Ubt-hT-eqk"/>
                             <constraint firstItem="W2f-ZL-iTp" firstAttribute="trailing" secondItem="toe-Hz-d4v" secondAttribute="trailing" id="WPC-0J-D55"/>
-                            <constraint firstItem="lRo-JH-yDb" firstAttribute="bottom" secondItem="toe-Hz-d4v" secondAttribute="bottom" constant="34" id="Yf9-s5-eo7"/>
-                            <constraint firstItem="lRo-JH-yDb" firstAttribute="trailing" secondItem="toe-Hz-d4v" secondAttribute="trailing" id="gCk-3Q-TL5"/>
                             <constraint firstItem="W2f-ZL-iTp" firstAttribute="top" secondItem="toe-Hz-d4v" secondAttribute="top" id="hRz-Ng-YoN"/>
-                            <constraint firstItem="Ffc-4z-gkV" firstAttribute="trailing" secondItem="toe-Hz-d4v" secondAttribute="trailing" id="hYK-hi-Gr8"/>
-                            <constraint firstItem="lRo-JH-yDb" firstAttribute="leading" secondItem="toe-Hz-d4v" secondAttribute="leading" id="xbb-S2-96G"/>
+                            <constraint firstItem="zdu-JE-COs" firstAttribute="bottom" secondItem="toe-Hz-d4v" secondAttribute="bottom" constant="34" id="rBe-8Y-IWU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="yQB-A1-isU"/>
@@ -181,6 +154,7 @@
                         <outlet property="currentweatherImage" destination="6y9-gk-thb" id="mu5-W6-bG1"/>
                         <outlet property="dateLabel" destination="05P-jd-SgU" id="tbm-7I-DXi"/>
                         <outlet property="humidityLabel" destination="fHL-YQ-biE" id="o0K-GK-Zi6"/>
+                        <outlet property="mapView" destination="zdu-JE-COs" id="Wd0-2f-lYF"/>
                         <outlet property="tempLabel" destination="06D-Ov-EFe" id="6GH-Hf-DOb"/>
                         <outlet property="windDirectionImage" destination="6Fa-T9-uPp" id="ia3-hU-kJ9"/>
                         <outlet property="windLabel" destination="iTk-u3-pWh" id="7kd-tQ-V2b"/>
@@ -189,7 +163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="98b-Rd-lpv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="578.26086956521749" y="176.9021739130435"/>
+            <point key="canvasLocation" x="575.38461538461536" y="175.59241706161137"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="sa2-8p-rot">
@@ -231,9 +205,6 @@
         <image name="icon_wind_ne" width="34" height="34"/>
         <namedColor name="appMainBlue">
             <color red="0.28999999165534973" green="0.56499999761581421" blue="0.88599997758865356" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="appSecondaryBlue">
-            <color red="0.3529999852180481" green="0.62400001287460327" blue="0.94099998474121094" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
